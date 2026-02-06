@@ -1,0 +1,16 @@
+# PowerShell
+*.ps1xml
+~$*
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Test Results
+TestResults/
+*.trx
+
+# Build Artifacts
+bin/
+obj/
+*.nupkg
