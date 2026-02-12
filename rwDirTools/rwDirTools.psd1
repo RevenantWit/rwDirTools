@@ -1,6 +1,6 @@
 @{
 	RootModule = 'rwDirTools.psm1'
-	ModuleVersion = '1.0.0'
+	ModuleVersion = '1.1.0'
 	GUID = '00000000-0000-0000-0000-000000000000'
 	Author = 'RevenantWit'
 	CompanyName = ''
@@ -22,7 +22,7 @@
 			Tags = @('Directory', 'Menu', 'Interactive', 'CLI', 'GUI', 'Utility', 'Cross-Platform')
 			LicenseUri = 'https://opensource.org/licenses/MIT'
 			ProjectUri = 'https://github.com/RevenantWit/rwDirTools'
-			ReleaseNotes = 'Initial release with Get-rwDirPath, New-rwDirPath, and Out-rwMenuCLI functions.'
+			ReleaseNotes = 'Refactored for less redundant and more modular code, and increased reliability'
 		}
 	}
 }

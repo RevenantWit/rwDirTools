@@ -1,22 +1,61 @@
-# Module-level constants and compiled patterns for performance
-if ([System.Environment]::OSVersion.Platform -eq 'Win32NT') {
-    $script:WindowsReservedDeviceNames = @('CON','PRN','AUX','NUL') + @(1..9 | ForEach-Object { "COM$_" }) + @(1..9 | ForEach-Object { "LPT$_" })
-    # Pre-compile regex pattern for reserved names with special characters
-    $script:ReservedNamePattern = "^($($script:WindowsReservedDeviceNames -join '|'))(\.|:|\s)"
-    Write-Verbose "rwDirTools module loaded (Windows mode). Reserved device names: $($script:WindowsReservedDeviceNames.Count) items. Pattern cached for performance."
+function Test-IsWindows {
+	return [System.Environment]::OSVersion.Platform -eq 'Win32NT'
+}
+
+function Get-rwGridViewAvailable {
+	return (-not ([System.Environment]::GetEnvironmentVariable('SKIP_GRIDVIEW') -eq '1') `
+		-and (Get-Command -Name Out-GridView -CommandType Cmdlet -ErrorAction SilentlyContinue))
+}
+
+function Get-rwDirToolsAutomation {
+    return [System.Environment]::GetEnvironmentVariable('RW_DIRTOOLS_AUTO') -eq '1'
+}
+
+$script:SpectreConsoleAvailable = $null
+function Test-rwSpectreAvailable {
+	if ($null -ne $script:SpectreConsoleAvailable) {
+		return $script:SpectreConsoleAvailable
+	}
+
+	try {
+		$module = Get-Module -Name Spectre.Console -ListAvailable -ErrorAction Stop
+		if ($module) {
+			Import-Module Spectre.Console -ErrorAction Stop -WarningAction SilentlyContinue
+			$script:SpectreConsoleAvailable = $true
+			return $true
+		}
+	} catch {
+		Write-Verbose "Spectre.Console unavailable: $($_.Exception.Message)"
+	}
+
+	$script:SpectreConsoleAvailable = $false
+	return $false
+}
+
+if (Test-IsWindows) {
+	$script:WindowsReservedDeviceNames = @('CON','PRN','AUX','NUL') + @(1..9 | ForEach-Object { "COM$_" }) + @(1..9 | ForEach-Object { "LPT$_" })
+	$script:ReservedNamePattern = "^($($script:WindowsReservedDeviceNames -join '|'))(\.|:|\s)"
 } else {
-    $script:WindowsReservedDeviceNames = @()
-    $script:ReservedNamePattern = $null
-    Write-Verbose "rwDirTools module loaded (non-Windows mode). Platform-specific validations disabled."
+	$script:WindowsReservedDeviceNames = @()
+	$script:ReservedNamePattern = $null
 }
 
-# Dot-source all public functions (cross-platform path handling)
 $publicPath = Join-Path -Path $PSScriptRoot -ChildPath "Public"
-$functionCount = 0
-Get-ChildItem -Path $publicPath -Filter *.ps1 -ErrorAction SilentlyContinue | ForEach-Object {
-    Write-Verbose "Loading function from: $($_.Name)"
-    . $_.FullName
-    $functionCount++
+$publicFunctions = @("Get-rwDirPath.ps1", "New-rwDirPath.ps1", "Out-rwMenuCLI.ps1")
+
+foreach ($file in $publicFunctions) {
+	$fullPath = Join-Path $publicPath $file
+	if (-not (Test-Path -LiteralPath $fullPath -PathType Leaf)) {
+		throw [System.IO.FileNotFoundException] "Expected function file '$fullPath' is missing."
+	}
+	try {
+		. $fullPath
+	} catch {
+		throw "Failed to load '$file': $($_.Exception.Message)"
+	}
 }
 
-Write-Verbose "rwDirTools module initialization complete. Loaded $functionCount public function(s)."
+$privatePath = Join-Path $PSScriptRoot 'Private'
+Get-ChildItem -Path $privatePath -Filter '*.ps1' | ForEach-Object {
+    . $_.FullName
+}

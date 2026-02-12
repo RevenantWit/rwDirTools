@@ -1,0 +1,32 @@
+V1.1.0 Update
+
+Refactoring
+•	Eliminated code duplication: Moved Get-rwDirFromUI from public to private folder, removing inline implementation from Get-rwDirPath.ps1
+•	Modularized Out-rwMenuCLI: Split monolithic function into separate private helpers:
+•	New Show-rwSpectreMenu.ps1 – Spectre rendering only
+•	New Show-rwCLIMenu.ps1 – CLI menu rendering (Single, Multiple)
+•	Extracted Show-rwPromptYesNo.ps1 – Yes/No prompting logic
+•	Simplified parameter naming: Changed Mode to OutputMode for consistency
+•	Centralized automation: Added Get-rwDirToolsAutomation helper for environment variable checks
+•	Cleaner module loading: No longer uses wildcard to load the public functions
+•	Reduced verbose logging: Removed non-essential debug output
+•	Removed nested Get-rwDirFromUI definitions: One canonical version in Private folder
+
+Bug Fixes
+•	Fixed Read-rwNewDirName retry logic: Added missing continue statement for proper loop control
+•	Fixed Spectre error handling: Moved fallback logic from Show-rwSpectreMenu to Out-rwMenuCLI dispatcher for cleaner separation of concerns and better caller control
+•	Improved error feedback: Added explicit warning with exception details when Spectre rendering fails
+
+Tests
+•	Full automation mode support via environment variables
+
+Documentation
+•	Updated README with cleaner, more varied examples (not just script-based)
+•	Added menu usage examples with return types clearly stated
+
+Breaking Changes
+•	Changed: Out-rwMenuCLI parameter -Mode → -OutputMode
+
+Migration Notes
+If upgrading from 1.0.0:
+•	Update parameter name -Mode to -OutputMode in Out-rwMenuCLI calls
