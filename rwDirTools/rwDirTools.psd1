@@ -1,7 +1,7 @@
 @{
 	RootModule = 'rwDirTools.psm1'
 	ModuleVersion = '1.1.0'
-	GUID = '00000000-0000-0000-0000-000000000000'
+	GUID = '44e4c0c5-4b22-4696-b1b5-76baef37c281'
 	Author = 'RevenantWit'
 	CompanyName = ''
 	Copyright = 'Copyright (c) 2026 RevenantWit. Licensed under MIT License.'
