@@ -1,4 +1,4 @@
-function Show-rwPromptYesNo {
+﻿function Show-rwPromptYesNo {
 	[CmdletBinding()]
 
 	param(

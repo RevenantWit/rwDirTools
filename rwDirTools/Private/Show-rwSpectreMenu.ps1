@@ -1,4 +1,4 @@
-function Show-rwSpectreMenu {
+﻿function Show-rwSpectreMenu {
 	param(
 		[string]$Title,
 		[string[]]$Options,

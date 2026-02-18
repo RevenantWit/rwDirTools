@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
 Creates a directory safely with validation and optional interactive prompts.
 

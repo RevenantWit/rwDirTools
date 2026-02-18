@@ -1,4 +1,4 @@
-<#
+ï»¿<#
 .SYNOPSIS
 Select directories with filters, validation, and a GUI/CLI fallback.
 
@@ -24,7 +24,7 @@ Output only the folder names instead of full paths.
 Return `DirectoryInfo` instances for richer metadata access.
 
 .PARAMETER Title
-Prompt header shown in the UI (default: “Select A Folder”).
+Prompt header shown in the UI (default: "Select A Folder").
 
 .EXAMPLE
 Get-rwDirPath -Path .\Input -SingleDir
@@ -106,9 +106,13 @@ function Get-rwDirPathFiltered {
 		[string[]]$ExcludeDir,
 		[switch]$NoEmptyDir
 	)
+
 	$dirs = Get-ChildItem -LiteralPath $Path -Directory -ErrorAction SilentlyContinue
 	if ($ExcludeDir) {
-		$dirs = $dirs | Where-Object { $ExcludeDir -notcontains $_.Name }
+		$dirs = $dirs | Where-Object {
+			$name = $_.Name
+			-not ($ExcludeDir | Where-Object { $name -like $_ })
+		}
 	}
 
 	If ($NoEmptyDir) {

@@ -1,6 +1,6 @@
 @{
 	RootModule = 'rwDirTools.psm1'
-	ModuleVersion = '1.1.0'
+	ModuleVersion = '1.1.1'
 	GUID = '44e4c0c5-4b22-4696-b1b5-76baef37c281'
 	Author = 'RevenantWit'
 	CompanyName = ''
@@ -22,7 +22,7 @@
 			Tags = @('Directory', 'Menu', 'Interactive', 'CLI', 'GUI', 'Utility', 'Cross-Platform')
 			LicenseUri = 'https://opensource.org/licenses/MIT'
 			ProjectUri = 'https://github.com/RevenantWit/rwDirTools'
-			ReleaseNotes = 'Refactored for less redundant and more modular code, and increased reliability'
+			ReleaseNotes = 'Small fix for -ExcludeDir to support widcard matching.'
 		}
 	}
 }

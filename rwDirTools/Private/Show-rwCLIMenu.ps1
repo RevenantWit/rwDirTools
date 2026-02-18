@@ -1,4 +1,4 @@
-function Show-rwCLIMenu {
+﻿function Show-rwCLIMenu {
 	param(
 		[string]$Title,
 		[string[]]$Options,

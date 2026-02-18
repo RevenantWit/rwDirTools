@@ -1,4 +1,4 @@
-function Out-rwDirSelection {
+﻿function Out-rwDirSelection {
 	param(
 		[System.IO.DirectoryInfo[]]$Selection,
 		[switch]$ReturnName,
